@@ -1,0 +1,106 @@
+water = 400
+milk = 540
+cb = 120
+dc = 9
+money = 550
+
+def supplies():
+    print(f'''The coffee machine has:
+    {water} of water
+    {milk} of milk
+    {cb} of coffee beans
+    {dc} of disposable cups
+    {money} of money''')
+
+while True:
+    ques = input('Write action (buy, fill, take, remaining, exit):\n')
+
+    if ques == 'buy':
+        ans = input('What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:\n')
+        if ans == '1':
+            if (water, dc, cb) >= (250, 1, 16):
+                print('I have enough resources, making you a coffee!')
+                water -= 250
+                cb -= 16
+                dc -= 1
+                money += 4
+                continue
+            else:
+                fini = []
+                if water < 250:
+                    fini.append('water')
+                if dc < 1:
+                    fini.append('disposable cups')
+                if cb < 16:
+                    fini.append('coffee beans')
+                for i in fini:
+                    print(f'Sorry, not enough {i}!')
+                continue
+
+        elif ans == '2':
+            if (water, dc, cb, milk) >= (350, 1, 20, 75):
+                print('I have enough resources, making you a coffee!')
+                water -= 350
+                cb -= 20
+                dc -= 1
+                money += 7
+                milk -= 75
+                continue
+            else:
+                fini = []
+                if water < 350:
+                    fini.append('water')
+                if dc < 1:
+                    fini.append('disposable cups')
+                if cb < 20:
+                    fini.append('coffee beans')
+                if milk < 75:
+                    fini.append('milk')
+                for i in fini:
+                    print(f'Sorry, not enough {i}!')
+                continue
+
+        elif ans == '3':
+            if (water, dc, cb, milk) >= (200, 1, 12, 100):
+                print('I have enough resources, making you a coffee!')
+                water -= 200
+                cb -= 12
+                dc -= 1
+                money += 6
+                milk -= 100
+                continue
+            else:
+                fini = []
+                if water < 200:
+                    fini.append('water')
+                if dc < 1:
+                    fini.append('disposable cups')
+                if cb < 12:
+                    fini.append('coffee beans')
+                if milk < 100:
+                    fini.append('milk')
+                for i in fini:
+                    print(f'Sorry, not enough {i}!')
+                continue
+
+        else:
+            continue
+
+    elif ques == 'fill':
+        water += int(input('Write how many ml of water do you want to add:\n'))
+        milk += int(input('Write how many ml of milk do you want to add:\n'))
+        cb += int(input('Write how many grams of coffee beans do you want to add:\n'))
+        dc += int(input('Write how many disposable cups of coffee do you want to add:\n'))
+        continue
+
+    elif ques == 'take':
+        print(f'I gave you ${money}')
+        money = 0
+        continue
+
+    elif ques == 'exit':
+        break
+
+    elif ques == 'remaining':
+        print(supplies())
+        continue
