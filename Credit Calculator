@@ -1,0 +1,92 @@
+import math, argparse, sys
+
+
+def annuity():
+    for i in pdict:
+        if pdict[i] == None:
+            x = i
+
+    ni = args.interest / 1200
+
+    if x == 'periods':
+        tp = math.ceil(math.log(args.payment / (args.payment - ni * args.principal), 1 + ni))
+        yr = tp // 12
+        mon = tp % 12
+
+        if yr == 0:
+            print(f'You need {mon} months to repay this credit!')
+        elif mon == 0:
+            print(f'You need {yr} years to repay this credit!')
+        else:
+            print(f'You need {yr} years and {mon} months to repay this credit!')
+        print(f'Overpayment = {math.ceil(tp * args.payment - args.principal)}')
+
+    elif x == 'payment':
+        ap = (args.principal * math.pow((1 + ni), args.periods) * ni) / (math.pow((1 + ni), args.periods) - 1)
+        print(f'Your annuity payment = {math.ceil(ap)}!')
+        print(f'Overpayment = {math.ceil(math.ceil(ap) * args.periods - args.principal)}')
+
+    elif x == 'principal':
+        ppal = args.payment * (math.pow((1 + ni), args.periods) - 1) / (math.pow((1 + ni), args.periods) * ni)
+        print(f'Your credit principal = {math.floor(ppal)}!')
+        print(f'Overpayment = {math.ceil(args.payment * args.periods - math.floor(ppal))}')
+
+
+def differentiated():
+    ni = args.interest / 1200
+    if args.payment is not None:
+        print('Incorrect parameters')
+
+    else:
+        m = 1
+        lp = []
+        for i in range(args.periods):
+            dp = args.principal / args.periods + ni * (args.principal - (args.principal * (m - 1) / args.periods))
+            lp.append(math.ceil(dp))
+            print(f'Month {m}: paid out {math.ceil(dp)}')
+            m += 1
+        print('')
+        print(f'Overpayment = {sum(lp) - args.principal}')
+
+
+parser = argparse.ArgumentParser(description='Credit calculator.')
+parser.add_argument('--type', type = str, help = 'Differentiated or annuity')
+parser.add_argument('--principal', type = int, help = 'Principal amount')
+parser.add_argument('--payment', type = float, help = 'Monthly payment')
+parser.add_argument('--periods', type = int, help = 'Time period in months')
+parser.add_argument('--interest', type = float, help = 'Rate of interest in percentage')
+args = parser.parse_args()
+pdict = vars(args)
+
+while True:
+    if args.principal == None:
+        pass
+    elif args.principal < 0:
+        print('Incorrect parameters')
+        break
+    elif args.periods == None:
+        pass
+    elif args.periods < 0:
+        print('Incorrect parameters')
+        break
+    elif args.payment == None:
+        pass
+    elif args.payment < 0:
+        print('Incorrect parameters')
+        break
+    elif args.interest == None or args.interest < 0:
+        print('Incorrect parameters')
+        break
+
+    if len(sys.argv) != 5:
+        print('Incorrect parameters')
+        break
+    elif args.type == 'diff':
+        differentiated()
+        break
+    elif args.type == 'annuity':
+        annuity()
+        break
+    else:
+        print('Incorrect parameters')
+        break
